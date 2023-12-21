@@ -1,8 +1,24 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from .models import Product, Cart
+from .models import Product, Cart, Order
 from .forms import ProductForm
 from .forms import CartAddProductForm
+
+@login_required
+def order_summary(request):
+    order = Order.objects.get(user=request.user, ordered=False)
+    return render(request, 'order_summary.html', {'order': order})
+
+@login_required
+def checkout(request):
+    order = Order.objects.get(user=request.user, ordered=False)
+
+    if request.method == 'POST':
+        order.ordered = True
+        order.save()
+        return render(request, 'checkout.html', {'order': order})
+
+    return render(request, 'checkout.html', {'order': order})
 
 def add_to_cart(request, product_id):
     product = get_object_or_404(Product, id=product_id)
@@ -27,7 +43,8 @@ def product_list(request):
 
 def product_detail(request, product_id):
     product = get_object_or_404(Product, pk=product_id)
-    return render(request, 'products/product_detail.html', {'product': product})
+    cart_product_form = CartAddProductForm()
+    return render(request, 'products/product_detail.html', {'product': product, 'cart_product_form': cart_product_form})
 
 @login_required
 def create_product(request):
