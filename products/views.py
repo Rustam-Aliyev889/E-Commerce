@@ -1,7 +1,25 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from .models import Product
-from .forms import ProductForm  # You'll create this form in the next step
+from .models import Product, Cart
+from .forms import ProductForm
+from .forms import CartAddProductForm
+
+def add_to_cart(request, product_id):
+    product = get_object_or_404(Product, id=product_id)
+    cart, created = Cart.objects.get_or_create(user=request.user)
+    cart.products.add(product)
+    return redirect('cart')
+
+def view_cart(request):
+    cart, created = Cart.objects.get_or_create(user=request.user)
+    products = cart.products.all()
+    return render(request, 'cart/cart.html', {'cart': cart, 'products': products})
+
+def remove_from_cart(request, product_id):
+    product = get_object_or_404(Product, id=product_id)
+    cart, created = Cart.objects.get_or_create(user=request.user)
+    cart.products.remove(product)
+    return redirect('cart')
 
 def product_list(request):
     products = Product.objects.all()
