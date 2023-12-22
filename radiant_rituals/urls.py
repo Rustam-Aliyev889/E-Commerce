@@ -18,9 +18,13 @@ from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.auth import views as auth_views
 from django.urls import path, include
 from django.contrib import admin
+from products import views
+from products.views import home
+
 
 
 urlpatterns = [
+    path('', home, name='home'),
     path('admin/', admin.site.urls),
     path('products/', include('products.urls')),
     path('login/', LoginView.as_view(template_name='registration/login.html'), name='login'),

@@ -4,6 +4,9 @@ from .models import Product, Cart, Order
 from .forms import ProductForm
 from .forms import CartAddProductForm
 
+def home(request):
+    return render(request, 'base.html')
+
 @login_required
 def order_summary(request):
     order = Order.objects.get(user=request.user, ordered=False)
@@ -46,7 +49,7 @@ def product_detail(request, product_id):
     cart_product_form = CartAddProductForm()
     return render(request, 'products/product_detail.html', {'product': product, 'cart_product_form': cart_product_form})
 
-@login_required
+#@login_required
 def create_product(request):
     if request.method == 'POST':
         form = ProductForm(request.POST, request.FILES)
