@@ -5,7 +5,8 @@ from .forms import ProductForm
 from .forms import CartAddProductForm
 
 def home(request):
-    return render(request, 'base.html')
+    beauty_boxes = Product.objects.filter(category='Beauty Boxes')
+    return render(request, 'base.html', {'beauty_boxes': beauty_boxes})
 
 @login_required
 def order_summary(request):

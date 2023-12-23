@@ -3,8 +3,9 @@ from .views import product_list, product_detail, create_product, add_to_cart, vi
 
 
 
+
 urlpatterns = [
-    path('list/', product_list, name='product_list'),  # Adjust the URL pattern as needed
+    path('products/', product_list, name='product_list'), 
     path('<int:product_id>/', product_detail, name='product_detail'),
     path('create/', create_product, name='create_product'),
     path('add-to-cart/<int:product_id>/', add_to_cart, name='add_to_cart'),
