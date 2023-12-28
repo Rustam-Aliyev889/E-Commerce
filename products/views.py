@@ -3,9 +3,26 @@ from django.contrib.auth.decorators import login_required
 from .models import Product, Cart, Order
 from .forms import ProductForm
 from .forms import CartAddProductForm
+import random
 
 def home(request):
     beauty_boxes = Product.objects.filter(category='Beauty Boxes')
+
+    # to shuffle the beauty boxes to display in random order
+    beauty_boxes_shuffled = list(beauty_boxes)
+    random.shuffle(beauty_boxes_shuffled)
+
+    # to check for the gender filter
+    gender_filter = request.GET.get('gender')
+
+    # To apply additional filtering based on gender
+    if gender_filter == 'male':
+        beauty_boxes = [product for product in beauty_boxes_shuffled if product.gender == 'Male']
+    elif gender_filter == 'female':
+        beauty_boxes = [product for product in beauty_boxes_shuffled if product.gender == 'Female']
+    else:
+        beauty_boxes = beauty_boxes_shuffled
+
     return render(request, 'base.html', {'beauty_boxes': beauty_boxes})
 
 @login_required
