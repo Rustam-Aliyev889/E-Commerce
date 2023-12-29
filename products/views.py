@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from .models import Product, Cart, Order
+from .models import Product, Cart, Order, Article
 from .forms import ProductForm
 from .forms import CartAddProductForm
 import random
@@ -24,6 +24,23 @@ def home(request):
         beauty_boxes = beauty_boxes_shuffled
 
     return render(request, 'base.html', {'beauty_boxes': beauty_boxes})
+
+def article_list(request):
+    # Get all articles
+    articles = Article.objects.all()
+
+    # Get the selected category from the query parameters
+    category_filter = request.GET.get('category')
+
+    # Apply additional filtering based on the selected category
+    if category_filter:
+        articles = articles.filter(category=category_filter)
+    else:
+        # If no category is selected, shuffle articles and display only one random category
+        random_category = random.choice(Article.CATEGORY_CHOICES)[0]
+        articles = articles.filter(category=random_category)
+
+    return render(request, 'articles/article_list.html', {'articles': articles, 'selected_category': category_filter})
 
 @login_required
 def order_summary(request):

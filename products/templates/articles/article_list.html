@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <div class="container mt-4">
+    <h1 class="mb-4" style="text-align: center;">Helpful Write-ups</h1>
+    <div class="btn-group" role="group" aria-label="Filter by Category">
+        <!--<a href="{% url 'article_list' %}" class="btn btn-primary filter-button">All</a>-->
+        <a href="{% url 'article_list' %}?category=Haircare" class="btn btn-primary filter-button">Haircare</a>
+        <a href="{% url 'article_list' %}?category=Skincare" class="btn btn-primary filter-button">Skincare</a>
+        <a href="{% url 'article_list' %}?category=Bodycare" class="btn btn-primary filter-button">Bodycare</a>
+        <a href="{% url 'article_list' %}?category=Fragrance" class="btn btn-primary filter-button">Fragrance</a>
+        <!-- buttons  -->
+      </div>
+    <div class="row">
+      {% for article in articles %}
+        <div class="col-md-6 mb-4 mx-auto" style="width: 85%; font-family: cursive;">
+          <div class="article">
+            <h3 style="text-align: center; margin-top: 10px; margin-bottom: 20px;">{{ article.title }}</h3>
+            <img src="{{ article.main_image.url }}" class="img-fluid mb-3" alt="{{ article.title }}">
+            <p>{{ article.main_content | safe }}</p>
+            {% if article.secondary_image %}
+              <img src="{{ article.secondary_image.url }}" class="img-fluid mb-3" alt="{{ article.title }}">
+              <p>{{ article.secondary_content | safe }}</p>
+            {% endif %}
+            <p><small class="text-muted">Published on: {{ article.publication_date }}</small></p>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+{% endblock %}
+

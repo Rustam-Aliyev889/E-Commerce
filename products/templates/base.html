@@ -24,6 +24,7 @@
         <div class="navbar-nav ms-auto" style="color: rgb(122, 17, 17); font-size: 17px; font-weight: 600;">
           <a class="nav-link" aria-current="page" href="{% url 'home' %}" >Home</a>
           <a class="nav-link" href="{% url 'product_list' %}" >Products</a>
+          <a class="nav-link" href="{% url 'article_list' %}">Blog</a>
           <a class="nav-link" href="{% url 'create_product' %}" >Create Product</a>
           {% if user.is_authenticated %}
           <h4>Welcome {{user.username}}.</h4>

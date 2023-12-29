@@ -37,3 +37,22 @@ class Order(models.Model):
 
     def __str__(self):
         return self.name
+
+class Article(models.Model):
+    CATEGORY_CHOICES = (
+        ('Haircare', 'Haircare'),
+        ('Skincare', 'Skincare'),
+        ('Bodycare', 'Bodycare'),
+        ('Fragrance', 'Fragrance'),
+    )
+
+    title = models.CharField(max_length=255)
+    main_image = models.ImageField(upload_to='article_images/')
+    main_content = models.TextField()
+    secondary_image = models.ImageField(upload_to='article_images/', null=True, blank=True)
+    secondary_content = models.TextField(default='')
+    publication_date = models.DateTimeField(auto_now_add=True)
+    category = models.CharField(max_length=20, choices=CATEGORY_CHOICES, default='Haircare')
+
+    def __str__(self):
+        return self.title
