@@ -26,13 +26,12 @@ def home(request):
     return render(request, 'base.html', {'beauty_boxes': beauty_boxes})
 
 def article_list(request):
-    # Get all articles
     articles = Article.objects.all()
 
-    # Get the selected category from the query parameters
+    # Gets the selected category from the query parameters
     category_filter = request.GET.get('category')
 
-    # Apply additional filtering based on the selected category
+    # additional filtering based on the selected category
     if category_filter:
         articles = articles.filter(category=category_filter)
     else:
@@ -58,22 +57,31 @@ def checkout(request):
 
     return render(request, 'checkout.html', {'order': order})
 
-def add_to_cart(request, product_id):
-    product = get_object_or_404(Product, id=product_id)
-    cart, created = Cart.objects.get_or_create(user=request.user)
-    cart.products.add(product)
-    return redirect('cart')
-
 def view_cart(request):
     cart, created = Cart.objects.get_or_create(user=request.user)
     products = cart.products.all()
-    return render(request, 'cart/cart.html', {'cart': cart, 'products': products})
+    return render(request, 'products/cart.html', {'cart': cart, 'products': products})
+
+def add_to_cart(request, product_id):
+    try:
+        product_id = int(product_id)
+    except ValueError:
+        pass
+
+    product = get_object_or_404(Product, id=product_id)
+    cart, created = Cart.objects.get_or_create(user=request.user)
+    cart.products.add(product)
+    
+    beauty_boxes = Product.objects.filter(category='Beauty Boxes')
+
+    return render(request, 'base.html', {'beauty_boxes': beauty_boxes})
+
 
 def remove_from_cart(request, product_id):
     product = get_object_or_404(Product, id=product_id)
     cart, created = Cart.objects.get_or_create(user=request.user)
     cart.products.remove(product)
-    return redirect('cart')
+    return redirect('view_cart')
 
 def product_list(request):
     products = Product.objects.all()
@@ -82,7 +90,20 @@ def product_list(request):
 def product_detail(request, product_id):
     product = get_object_or_404(Product, pk=product_id)
     cart_product_form = CartAddProductForm()
-    return render(request, 'products/product_detail.html', {'product': product, 'cart_product_form': cart_product_form})
+
+    if request.method == 'POST':
+        cart_product_form = CartAddProductForm(request.POST)
+        if cart_product_form.is_valid():
+            # Handle adding product to the cart
+            # You may need to modify this part based on your implementation
+            # For example, you can use the Cart model to store the added products
+            # and the session to keep track of the current user's cart
+            # Add the logic to handle adding the product to the cart
+            # After that, you can redirect the user to the cart view
+
+            return redirect('view_cart')
+        
+        return render(request, 'products/product_detail.html', {'product': product, 'cart_product_form': cart_product_form, 'product_id': product_id})
 
 #@login_required
 def create_product(request):
