@@ -18,20 +18,36 @@ document.addEventListener('DOMContentLoaded', function () {
 // custom.js
 
 function addToCart(product_id) {
-    $.ajax({
-        url: '/products/add-to-cart/19/',
-        type: 'POST',
-        data: {'csrfmiddlewaretoken': '{{ csrf_token }}'},
-        success: function (data) {
-            console.log('Item added to cart successfully:', data.message);
-            // Perform any additional client-side actions here.
-        },
-        error: function (error) {
-            console.error('Error adding item to cart:', error);
-        }
-    });
+    // Obtain the CSRF token from the cookie
+    const csrf_token = document.cookie.match(/csrftoken=([^ ;]+)/)[1];
+    
+    if (product_id !== 'undefined') {
+        $.ajax({
+            url: `/products/add-to-cart/${product_id}/`,
+            type: 'POST',
+            headers: {
+                'X-CSRFToken': csrf_token
+            },
+            data: {
+                csrfmiddlewaretoken: csrf_token
+            },
+            dataType: 'json',
+            success: function (data) {
+                console.log('Item added to cart successfully:', data.product_name);
+            },
+            error: function (error) {
+                console.error('Error adding item to cart:', error);
+            }
+        });
+    }
 }
 
 
 
-console.log('hello')
+
+
+
+
+
+
+console.log({ csrf_token })
