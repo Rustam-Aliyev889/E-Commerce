@@ -4,6 +4,7 @@ from .models import Product, Cart, Order, Article
 from .forms import ProductForm
 from .forms import CartAddProductForm
 import random
+from django.http import JsonResponse
 
 def home(request):
     beauty_boxes = Product.objects.filter(category='Beauty Boxes')
@@ -71,10 +72,12 @@ def add_to_cart(request, product_id):
     product = get_object_or_404(Product, id=product_id)
     cart, created = Cart.objects.get_or_create(user=request.user)
     cart.products.add(product)
-    
-    beauty_boxes = Product.objects.filter(category='Beauty Boxes')
 
-    return render(request, 'base.html', {'beauty_boxes': beauty_boxes})
+    beauty_boxes = Product.objects.filter(category='Beauty Boxes')
+    
+    response_data = {'product_name': product.name, 'success': True}
+    return JsonResponse(response_data)
+    #return render(request, 'base.html', {'beauty_boxes': beauty_boxes})
 
 
 def remove_from_cart(request, product_id):

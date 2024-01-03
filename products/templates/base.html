@@ -43,7 +43,9 @@
       </div>
     </div>
   </nav>
-
+  <!--<header class="bg-dark py-1">
+    <img src="{% static 'images/banner2.png' %}" class="d-block w-100" alt="..." style="width: 100%;">
+  </header>-->
 
   <div class="container-fluid">
     {% block content %}
@@ -87,16 +89,16 @@
 
     <div class="row">
         <div class="row">
-            {% for beauty_box in beauty_boxes %}
+            {% for product in beauty_boxes %}
                 <div class="col-md-3 mt-4 mx-auto mb-4">
                     <div class="card">
-                        <img src="{{ beauty_box.image.url }}" class="card-img-top" alt="{{ beauty_box.name }}">
+                        <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}">
                         <div class="card-body">
-                            <h5 class="card-title" style="height: 3rem;">{{ beauty_box.name }}</h5>
+                            <h5 class="card-title" style="height: 3rem;">{{ product.name }}</h5>
                             <!--<p class="card-text">{{ beauty_box.description }}</p>-->
-                            <p class="card-text">Price: ${{ beauty_box.price }}</p>
+                            <p class="card-text">Price: ${{ product.price }}</p>
                             <!-- buttons -->
-                            <form id="add-to-cart-form" method="post" action="{% url 'add_to_cart' beauty_box.id %}" data-product-id="{{ beauty_box.id }}">
+                            <form id="add-to-cart-form" method="post" action="{% url 'add_to_cart' product.id %}" data-product-id="{{ product.id }}">
                                 {% csrf_token %}
                                 {{ cart_product_form }}
                                 <button type="submit" class="btn btn-primary">Add to Cart</button>

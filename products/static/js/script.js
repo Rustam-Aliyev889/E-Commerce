@@ -14,3 +14,24 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 });
+
+// custom.js
+
+function addToCart(product_id) {
+    $.ajax({
+        url: '/products/add-to-cart/19/',
+        type: 'POST',
+        data: {'csrfmiddlewaretoken': '{{ csrf_token }}'},
+        success: function (data) {
+            console.log('Item added to cart successfully:', data.message);
+            // Perform any additional client-side actions here.
+        },
+        error: function (error) {
+            console.error('Error adding item to cart:', error);
+        }
+    });
+}
+
+
+
+console.log('hello')

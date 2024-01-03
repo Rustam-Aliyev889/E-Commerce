@@ -11,6 +11,11 @@
                     <p class="card-text">{{ product.description }}</p>
                     <p class="card-text">Price: ${{ product.price }}</p>
                     <!-- buttons -->
+                    <form id="add-to-cart-form" method="post" action="{% url 'add_to_cart' product.id %}" data-product-id="{{ product.id }}">
+                        {% csrf_token %}
+                        {{ cart_product_form }}
+                        <button type="submit" class="btn btn-primary">Add to Cart</button>
+                    </form>
                 </div>
             </div>
         </div>
