@@ -15,8 +15,6 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 
-// custom.js
-
 function addToCart(product_id) {
     // Obtain the CSRF token from the cookie
     const csrf_token = document.cookie.match(/csrftoken=([^ ;]+)/)[1];
@@ -33,10 +31,46 @@ function addToCart(product_id) {
             },
             dataType: 'json',
             success: function (data) {
-                console.log('Item added to cart successfully:', data.product_name);
+                const messageContainer = document.getElementById('cartMessageContainer');
+                messageContainer.innerHTML = `"${data.product_name}" added to cart successfully.`;
+
+                messageContainer.style.display = 'block';
+                messageContainer.style.position = 'fixed';
+                messageContainer.style.textAlign = 'center';
+                messageContainer.style.top = '0'
+                messageContainer.style.left = '50%';
+                messageContainer.style.transform = 'translateX(-50%)';
+                messageContainer.style.backgroundColor = '#4CAF50';
+                messageContainer.style.color = 'white';
+                messageContainer.style.padding = '15px';
+                messageContainer.style.zIndex = '1000';
+
+                setTimeout(() => {
+                    messageContainer.innerHTML = '';
+                    messageContainer.style.display = 'none';
+                }, 3500);
+                /*console.log('Item added to cart successfully:', data.product_name);*/
             },
             error: function (error) {
-                console.error('Error adding item to cart:', error);
+                const messageContainer = document.getElementById('cartMessageContainer');
+                messageContainer.innerHTML = 'Error adding item to cart: ' + error;
+
+                messageContainer.style.display = 'block';
+                messageContainer.style.position = 'fixed';
+                messageContainer.style.textAlign = 'center';
+                messageContainer.style.top = '0'
+                messageContainer.style.left = '50%';
+                messageContainer.style.transform = 'translateX(-50%)';
+                messageContainer.style.backgroundColor = '#8B0000';
+                messageContainer.style.color = 'white';
+                messageContainer.style.padding = '15px';
+                messageContainer.style.zIndex = '1000';
+
+                setTimeout(() => {
+                    messageContainer.innerHTML = '';
+                    messageContainer.style.display = 'none';
+                }, 3500);
+                /*console.error('Error adding item to cart:', error);*/
             }
         });
     }

@@ -73,7 +73,7 @@ def add_to_cart(request, product_id):
     cart, created = Cart.objects.get_or_create(user=request.user)
     cart.products.add(product)
 
-    beauty_boxes = Product.objects.filter(category='Beauty Boxes')
+    #beauty_boxes = Product.objects.filter(category='Beauty Boxes')
     
     response_data = {'product_name': product.name, 'success': True}
     return JsonResponse(response_data)
