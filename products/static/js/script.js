@@ -15,6 +15,40 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 
+function updateCartCount() {
+    const cartItemCount = document.getElementById('cartItemCount');
+    
+    if (cartItemCount) {
+        $.ajax({
+            url: 'products/get-cart-count/',
+            type: 'GET',
+            dataType: 'json',
+            success: function (data) {
+                console.log('Server response:', data);
+                console.log('Updating cart count:', data.item_count);
+                if (data.item_count > 0) {
+                    cartItemCount.innerHTML = data.item_count;
+                    cartItemCount.style.display = 'inline-block'; 
+                } else {
+                    console.log('Hiding cart count.');
+                    cartItemCount.style.display = 'none';  // Hides the badge if count is 0
+                }
+            },
+            error: function (error) {
+                console.error('Error updating cart count:', error);
+            }
+        });
+    } else {
+        console.error('Element with ID "cartItemCount" not found.');
+    }
+}
+
+
+
+$(document).ready(function () {
+    updateCartCount();
+});
+
 function addToCart(product_id) {
     // Obtain the CSRF token from the cookie
     const csrf_token = document.cookie.match(/csrftoken=([^ ;]+)/)[1];
@@ -49,6 +83,7 @@ function addToCart(product_id) {
                     messageContainer.innerHTML = '';
                     messageContainer.style.display = 'none';
                 }, 3500);
+                updateCartCount();
                 /*console.log('Item added to cart successfully:', data.product_name);*/
             },
             error: function (error) {
@@ -75,12 +110,6 @@ function addToCart(product_id) {
         });
     }
 }
-
-
-
-
-
-
 
 
 

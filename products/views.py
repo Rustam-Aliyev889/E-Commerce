@@ -63,6 +63,16 @@ def view_cart(request):
     products = cart.products.all()
     return render(request, 'products/cart.html', {'cart': cart, 'products': products})
 
+def get_cart_count(request):
+    if request.user.is_authenticated:
+        cart = get_object_or_404(Cart, user=request.user)
+        item_count = cart.products.count()
+    else:
+        # anonymous user's cart count (if applicable)
+        item_count = 0  # logic for anonymous users
+
+    return JsonResponse({'item_count': item_count})
+
 def add_to_cart(request, product_id):
     try:
         product_id = int(product_id)

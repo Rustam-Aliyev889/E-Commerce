@@ -31,12 +31,13 @@
           <a class="nav-link" href="{% url 'product_list' %}" >Products</a>
           <a class="nav-link" href="{% url 'article_list' %}">Blog</a>
           <!--<a class="nav-link" href="{% url 'create_product' %}" >Create Product</a>-->
-          <a href="{% url 'view_cart' %}" class="nav-link">
+          <a href="{% url 'view_cart' %}" class="nav-link" id="cartLink">
             <i class="fas fa-shopping-cart"></i> 
-            {% if cart.item_count > 0 %}
-                <span class="badge badge-pill badge-danger">{{ cart.item_count }}</span>
-            {% endif %}
-          </a>
+            <span class="badge badge-pill badge-danger" style="background-color: rgb(66, 25, 69); border-radius: 50%; font-size: 15px;" id="cartItemCount">{{ cart.item_count }}</span>
+            <!--{% if cart.item_count > 0 %}
+            <span class="badge badge-pill badge-danger" style="background-color:black;" id="cartItemCount">{{ cart.item_count }}</span>
+            {% endif %}-->
+        </a>
           {% if user.is_authenticated %}
           <a class="nav-link" href="{% url 'logout' %}" >Logout</a>
           {% else %}
