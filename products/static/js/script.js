@@ -15,14 +15,14 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 
-const BASE_URL = '/products/';  // Adjust this based on your actual base URL
+const BASE_URL = '/products/'; 
 
 function updateCartCount() {
     const cartItemCount = document.getElementById('cartItemCount');
 
     if (cartItemCount) {
         $.ajax({
-            url: BASE_URL + 'get-cart-count/',  // Construct the URL here
+            url: BASE_URL + 'get-cart-count/', 
             type: 'GET',
             dataType: 'json',
             success: function (data) {
@@ -31,10 +31,10 @@ function updateCartCount() {
                 if (data.item_count > 0) {
                     console.log('Updating cart count:', data.item_count);
                     cartItemCount.innerHTML = data.item_count;
-                    cartItemCount.style.display = 'inline-block';  // Show the badge
+                    cartItemCount.style.display = 'inline-block';  // Shows the badge
                 } else {
                     console.log('Hiding cart count.');
-                    cartItemCount.style.display = 'none';  // Hide the badge if count is 0
+                    cartItemCount.style.display = 'none';  //  the badge if count is 0
                 }
             },
             error: function (error) {
