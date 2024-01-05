@@ -15,23 +15,26 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 
+const BASE_URL = '/products/';  // Adjust this based on your actual base URL
+
 function updateCartCount() {
     const cartItemCount = document.getElementById('cartItemCount');
-    
+
     if (cartItemCount) {
         $.ajax({
-            url: 'products/get-cart-count/',
+            url: BASE_URL + 'get-cart-count/',  // Construct the URL here
             type: 'GET',
             dataType: 'json',
             success: function (data) {
                 console.log('Server response:', data);
-                console.log('Updating cart count:', data.item_count);
+
                 if (data.item_count > 0) {
+                    console.log('Updating cart count:', data.item_count);
                     cartItemCount.innerHTML = data.item_count;
-                    cartItemCount.style.display = 'inline-block'; 
+                    cartItemCount.style.display = 'inline-block';  // Show the badge
                 } else {
                     console.log('Hiding cart count.');
-                    cartItemCount.style.display = 'none';  // Hides the badge if count is 0
+                    cartItemCount.style.display = 'none';  // Hide the badge if count is 0
                 }
             },
             error: function (error) {
@@ -43,11 +46,11 @@ function updateCartCount() {
     }
 }
 
-
-
+// Call updateCartCount when the page loads or when an item is added/removed
 $(document).ready(function () {
     updateCartCount();
 });
+
 
 function addToCart(product_id) {
     // Obtain the CSRF token from the cookie
