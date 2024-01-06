@@ -61,7 +61,10 @@ def checkout(request):
 def view_cart(request):
     cart, created = Cart.objects.get_or_create(user=request.user)
     products = cart.products.all()
-    return render(request, 'products/cart.html', {'cart': cart, 'products': products})
+    total_price = sum(product.price for product in products)
+
+    return render(request, 'products/cart.html', {'cart': cart, 'products': products, 'total_price': total_price})
+    #return render(request, 'products/cart.html', {'cart': cart, 'products': products})
 
 def get_cart_count(request):
     if request.user.is_authenticated:

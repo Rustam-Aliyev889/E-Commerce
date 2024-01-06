@@ -46,7 +46,7 @@ function updateCartCount() {
     }
 }
 
-// Call updateCartCount when the page loads or when an item is added/removed
+
 $(document).ready(function () {
     updateCartCount();
 });
@@ -69,7 +69,7 @@ function addToCart(product_id) {
             dataType: 'json',
             success: function (data) {
                 const messageContainer = document.getElementById('cartMessageContainer');
-                messageContainer.innerHTML = `"${data.product_name}" added to cart successfully.`;
+                messageContainer.innerHTML = `"${data.product_name}"  added to cart successfully.`;
 
                 messageContainer.style.display = 'block';
                 messageContainer.style.position = 'fixed';
