@@ -3,22 +3,24 @@
 {% block content %}
 <div class="row">
     {% for product in products %}
-        <div class="col-md-2 mt-4 my-2 mx-2 mb-4">
-            <div class="card">
-                <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}">
-                <div class="card-body">
-                    <h5 class="card-title">{{ product.name }}</h5>
-                    <p class="card-text">{{ product.description }}</p>
-                    <p class="card-text">Price: ${{ product.price }}</p>
-                    <!-- buttons -->
-                    <form id="add-to-cart-form" method="post" action="{% url 'add_to_cart' product.id %}" data-product-id="{{ product.id }}">
-                        {% csrf_token %}
-                        {{ cart_product_form }}
-                        <button type="submit" class="btn btn-primary">Add to Cart</button>
-                    </form>
-                </div>
+    <div class="col-md-3 mt-4 mx-auto mb-4">
+        <div class="card">
+            <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}">
+            <div class="card-body">
+                <a class="nav-link" href="{% url 'product_detail' product_id=product.id %}" style="height: 3rem; font-size: 19px; font-weight: 500; transition: transform 0.3s ease-out;" onmouseover="this.style.transform='scale(1.075)'" onmouseout="this.style.transform='scale(1)'">{{ product.name }}</a>
+                <!--<h5 class="card-title" style="height: 3rem;">{{ product.name }}</h5>-->
+                <!--<p class="card-text">{{ beauty_box.description }}</p>-->
+                <p class="card-text mt-3">Price: ${{ product.price }}</p>
+                <!-- buttons -->
+                <form id="add-to-cart-form" method="post" action="{% url 'add_to_cart' product.id %}" data-product-id="{{ product.id }}">
+                    {% csrf_token %}
+                    {{ cart_product_form }}
+                    <button type="button" onclick="addToCart('{{ product.id|escapejs }}')" class="btn btn-primary">Add to Cart</button>
+                </form>
+                <div id="cartMessageContainer" class="container-fluid" style="font-family: cursive;"></div>
             </div>
         </div>
+    </div>
     {% endfor %}
 </div>
 {% endblock %}

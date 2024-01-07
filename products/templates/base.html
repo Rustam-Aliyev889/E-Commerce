@@ -98,9 +98,10 @@
                     <div class="card">
                         <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}">
                         <div class="card-body">
-                            <h5 class="card-title" style="height: 3rem;">{{ product.name }}</h5>
+                            <a class="nav-link" href="{% url 'product_detail' product_id=product.id %}" style="height: 3rem; font-size: 20px; font-weight: 500; transition: transform 0.3s ease-out;" onmouseover="this.style.transform='scale(1.075)'" onmouseout="this.style.transform='scale(1)'">{{ product.name }}</a>
+                            <!--<h5 class="card-title" style="height: 3rem;">{{ product.name }}</h5>-->
                             <!--<p class="card-text">{{ beauty_box.description }}</p>-->
-                            <p class="card-text">Price: ${{ product.price }}</p>
+                            <p class="card-text mt-3">Price: ${{ product.price }}</p>
                             <!-- buttons -->
                             <form id="add-to-cart-form" method="post" action="{% url 'add_to_cart' product.id %}" data-product-id="{{ product.id }}">
                                 {% csrf_token %}

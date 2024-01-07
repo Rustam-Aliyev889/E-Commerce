@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <div class="container mt-4"></div>
+    <!--<div class="container mt-4"></div>
         <h1>{{ product.name }}</h1>
         <p>{{ product.description }}</p>
         <p>Price: ${{ product.price }}</p>
@@ -14,5 +14,28 @@
             <input type="number" id="quantity" name="quantity" value="1" min="1">
             <button type="submit" class="btn btn-primary">Add to Cart</button>
         </form>
-    </div>
+    </div>-->
+    <section class="py-3">
+        <div class="container px-4 px-lg-5 my-5">
+            <div class="row gx-4 gx-lg-5 align-items-center">
+                <div class="col-md-6"><img class="card-img-top mb-5 mb-md-0" src="{{ product.image.url }}" alt="{{ product.name }}" /></div>
+                <div class="col-md-6">
+                    <!--<div class="small mb-1">{{ product.id }}</div>-->
+                    <h1 class="display-5 fw-bolder">{{ product.name }}</h1>
+                    <div class="fs-5 mt-4 mb-4">
+                        <span>Price: ${{ product.price }}</span>
+                    </div>
+                    <p class="lead" style="font-weight: 350;">{{ product.description }}</p>
+                    <div class="d-flex">
+                        <input class="form-control text-center me-3" id="inputQuantity" type="number" value="1" min="1" style="max-width: 4rem">
+                        <button class="btn btn-outline-dark flex-shrink-0" type="button" onclick="addToCart('{{ product.id|escapejs }}')">
+                            <i class="bi-cart-fill me-1"></i>
+                            Add to Cart
+                        </button>
+                    </div>
+                    <div id="cartMessageContainer" class="container-fluid" style="font-family: cursive;"></div>
+                </div>
+            </div>
+        </div>
+    </section>
 {% endblock %}

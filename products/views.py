@@ -116,10 +116,13 @@ def product_detail(request, product_id):
             # and the session to keep track of the current user's cart
             # Add the logic to handle adding the product to the cart
             # After that, you can redirect the user to the cart view
-
             return redirect('view_cart')
-        
-        return render(request, 'products/product_detail.html', {'product': product, 'cart_product_form': cart_product_form, 'product_id': product_id})
+        else:
+            # If the form is not valid, will render the product detail page with errors
+            return render(request, 'products/product_detail.html', {'product': product, 'cart_product_form': cart_product_form, 'product_id': product_id})
+    
+    # If the request method is not POST, just renders the product detail page
+    return render(request, 'products/product_detail.html', {'product': product, 'cart_product_form': cart_product_form, 'product_id': product_id})
 
 #@login_required
 def create_product(request):
