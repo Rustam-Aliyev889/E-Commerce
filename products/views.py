@@ -110,12 +110,11 @@ def product_detail(request, product_id):
     if request.method == 'POST':
         cart_product_form = CartAddProductForm(request.POST)
         if cart_product_form.is_valid():
-            # Handle adding product to the cart
-            # You may need to modify this part based on your implementation
-            # For example, you can use the Cart model to store the added products
-            # and the session to keep track of the current user's cart
-            # Add the logic to handle adding the product to the cart
-            # After that, you can redirect the user to the cart view
+            new_quantity = cart_product_form.cleaned_data['quantity']
+            # Updates for product quantity 
+            product.quantity = new_quantity
+            product.save()
+
             return redirect('view_cart')
         else:
             # If the form is not valid, will render the product detail page with errors

@@ -25,6 +25,7 @@ class Product(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     category = models.CharField(max_length=20, choices=CATEGORY_CHOICES, default='Other')
     gender = models.CharField(max_length=10, choices=GENDER_CHOICES, default="Unisex")
+    quantity = models.IntegerField(default=1)
 
 class Cart(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)

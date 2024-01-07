@@ -53,6 +53,7 @@ $(document).ready(function () {
 
 
 function addToCart(product_id) {
+    const quantity = document.getElementById('inputQuantity').value;
     // Obtain the CSRF token from the cookie
     const csrf_token = document.cookie.match(/csrftoken=([^ ;]+)/)[1];
     
@@ -64,7 +65,8 @@ function addToCart(product_id) {
                 'X-CSRFToken': csrf_token
             },
             data: {
-                csrfmiddlewaretoken: csrf_token
+                csrfmiddlewaretoken: csrf_token,
+                quantity: quantity
             },
             dataType: 'json',
             success: function (data) {
