@@ -53,7 +53,12 @@ $(document).ready(function () {
 
 
 function addToCart(product_id) {
-    const quantity = document.getElementById('inputQuantity').value;
+    let quantity = 1;  // Default quantity
+    const inputQuantity = document.getElementById('inputQuantity');
+    if (inputQuantity) {
+        quantity = parseInt(inputQuantity.value, 10);
+        }
+    console.log('Quantity:', quantity);
     // Obtain the CSRF token from the cookie
     const csrf_token = document.cookie.match(/csrftoken=([^ ;]+)/)[1];
     

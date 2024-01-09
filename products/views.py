@@ -61,7 +61,7 @@ def checkout(request):
 def view_cart(request):
     cart, created = Cart.objects.get_or_create(user=request.user)
     products = cart.products.all()
-    total_price = sum(product.price for product in products)
+    total_price = sum(product.price * product.quantity for product in products)
 
     return render(request, 'products/cart.html', {'cart': cart, 'products': products, 'total_price': total_price})
     #return render(request, 'products/cart.html', {'cart': cart, 'products': products})
@@ -84,13 +84,18 @@ def add_to_cart(request, product_id):
 
     product = get_object_or_404(Product, id=product_id)
     cart, created = Cart.objects.get_or_create(user=request.user)
+
+    # Gets the quantity from the AJAX request data
+    quantity = int(request.POST.get('quantity', 1))
+
+        #To update the quantity in the Product model
+    product.quantity = quantity
+    product.save()
     cart.products.add(product)
 
-    #beauty_boxes = Product.objects.filter(category='Beauty Boxes')
-    
-    response_data = {'product_name': product.name, 'success': True}
+    response_data = {'product_name': product.name, 'success': True,'quantity': product.quantity }
+
     return JsonResponse(response_data)
-    #return render(request, 'base.html', {'beauty_boxes': beauty_boxes})
 
 
 def remove_from_cart(request, product_id):
