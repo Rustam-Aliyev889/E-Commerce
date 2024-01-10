@@ -89,7 +89,7 @@ def add_to_cart(request, product_id):
     quantity = int(request.POST.get('quantity', 1))
 
         #To update the quantity in the Product model
-    product.quantity = quantity
+    product.quantity += quantity
     product.save()
     cart.products.add(product)
 
@@ -101,6 +101,8 @@ def add_to_cart(request, product_id):
 def remove_from_cart(request, product_id):
     product = get_object_or_404(Product, id=product_id)
     cart, created = Cart.objects.get_or_create(user=request.user)
+    product.quantity = 0
+    product.save()
     cart.products.remove(product)
     return redirect('view_cart')
 
