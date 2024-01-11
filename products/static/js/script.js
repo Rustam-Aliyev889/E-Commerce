@@ -92,7 +92,7 @@ function addToCart(product_id) {
                 setTimeout(() => {
                     messageContainer.innerHTML = '';
                     messageContainer.style.display = 'none';
-                }, 3500);
+                }, 3000);
                 updateCartCount();
                 /*console.log('Item added to cart successfully:', data.product_name);*/
             },
