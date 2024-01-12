@@ -2,7 +2,9 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login, logout, authenticate
 from .models import Product, Cart, Order, Article
-from .forms import ProductForm, CartAddProductForm, UserCreationForm
+from django.contrib.auth.models import User
+from django.contrib.auth.forms import UserCreationForm
+from .forms import ProductForm, CartAddProductForm, SignUpForm
 import random
 from django.http import JsonResponse
 from django.contrib import messages
@@ -28,21 +30,22 @@ def home(request):
     return render(request, 'base.html', {'beauty_boxes': beauty_boxes})
 
 def register(request):
-    if request.method == "POST":
-        form = UserCreationForm(request.POST)
-        if form.is_valid():
-            user = form.save()
-            username = form.cleaned_data.get('username')
-            messages.success(request, f" Thank you for registering {username}. You are now now loggged in.")
-            login(request, user)
-            return redirect('home')
-        else:
-            for error in form.errors.values():
-                messages.error(request, error.as_text())
-    else:
-        form = UserCreationForm()
-
-    return render(request, 'registration/register.html', {'form': form})
+	form = SignUpForm()
+	if request.method == "POST":
+		form = SignUpForm(request.POST)
+		if form.is_valid():
+			form.save()
+			username = form.cleaned_data['username']
+			password = form.cleaned_data['password1']
+			user = authenticate(username=username, password=password)
+			login(request, user)
+			messages.success(request, f" Thank you for registering {username}. You are now now loggged in.")
+			return redirect('home')
+		else:
+			messages.success(request, ("Whoops! There was a problem Registering, please try again..."))
+			return redirect('register')
+	else:
+		return render(request, 'registration/register.html', {'form':form})
 
 def login_user(request):
     if request.method == "POST":
