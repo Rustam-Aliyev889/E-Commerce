@@ -19,7 +19,7 @@ from django.contrib.auth import views as auth_views
 from django.urls import path, include
 from django.contrib import admin
 from products import views
-from products.views import home
+from products.views import home, register,login_user, logout_view
 from django.conf import settings
 from django.conf.urls.static import static
 
@@ -29,8 +29,9 @@ urlpatterns = [
     path('', home, name='home'),
     path('admin/', admin.site.urls),
     path('products/', include('products.urls')),
-    path('login/', LoginView.as_view(template_name='registration/login.html'), name='login'),
-    path('logout/', LogoutView.as_view(template_name='registration/logged_out.html'), name='logout'),
+    path('login/', login_user, name='login_user'),
+    path('logout/', logout_view, name='logout'),
+    path('register/', register, name='register'),
     path('password_change/', auth_views.PasswordChangeView.as_view(template_name='registration/password_change_form.html'), name='password_change'),
     path('password_change/done/', auth_views.PasswordChangeDoneView.as_view(template_name='registration/password_change_done.html'), name='password_change_done'),
     path('password_reset/', auth_views.PasswordResetView.as_view(template_name='registration/password_reset_form.html'), name='password_reset'),

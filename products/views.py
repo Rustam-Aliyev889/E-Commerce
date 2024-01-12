@@ -1,10 +1,11 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth import login, logout, authenticate
 from .models import Product, Cart, Order, Article
-from .forms import ProductForm
-from .forms import CartAddProductForm
+from .forms import ProductForm, CartAddProductForm, UserCreationForm
 import random
 from django.http import JsonResponse
+from django.contrib import messages
 
 def home(request):
     beauty_boxes = Product.objects.filter(category='Beauty Boxes')
@@ -25,6 +26,43 @@ def home(request):
         beauty_boxes = beauty_boxes_shuffled
 
     return render(request, 'base.html', {'beauty_boxes': beauty_boxes})
+
+def register(request):
+    if request.method == "POST":
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            username = form.cleaned_data.get('username')
+            messages.success(request, f" Thank you for registering {username}. You are now now loggged in.")
+            login(request, user)
+            return redirect('home')
+        else:
+            for error in form.errors.values():
+                messages.error(request, error.as_text())
+    else:
+        form = UserCreationForm()
+
+    return render(request, 'registration/register.html', {'form': form})
+
+def login_user(request):
+    if request.method == "POST":
+        username = request.POST['username']
+        password = request.POST['password']
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            login(request, user)
+            messages.success(request, "You have been logged in successfully.")
+            return redirect('home')
+        else:
+            messages.error(request, "Invalid username or password. Please try again.")
+            return redirect('login_user')  # Must match URL pattern name
+    else:
+        return render(request, 'registration/login.html', {})
+
+def logout_view(request):
+    logout(request)
+    messages.success(request, "You have been logged out successfully.")
+    return redirect('home')
 
 def article_list(request):
     articles = Article.objects.all()
