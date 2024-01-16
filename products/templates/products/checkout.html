@@ -1,15 +1,76 @@
 {% extends 'base.html' %}
 
 {% block content %}
-  <div class="container mt-4">
-    <h1>Checkout</h1>
-    <p>Thank you for your order!</p>
-    <h2>Order Details</h2>
-    <ul>
-      {% for item in order.items.all %}
-        <li>{{ item.product.name }} - Quantity: {{ item.quantity }} - ${{ item.get_total }}</li>
-      {% endfor %}
-    </ul>
-    <p>Total: ${{ order.get_total }}</p>
+  <div class="container mt-5">
+    <div class="row">
+      <div class="col-md-8 mb-4">
+        <!-- Order Details Card -->
+        <div class="card shadow">
+          <div class="card-body">
+            <h2 class="card-title mb-4">Order Details</h2>
+        
+            <table class="table">
+              <tbody>
+                {% for product in products %}
+                  <tr>
+                    <td class="align-middle"><img src="{{ product.image.url }}" alt="{{ product.name }}" class="img-thumbnail" width="50"></td>
+                    <td class="align-middle"><a class="nav-link" href="{% url 'product_detail' product_id=product.id %}">{{ product.name }}</a></td>
+                    <td class="align-middle">${{ product.price }}</td>
+                    <td class="align-middle">Q ({{ product.quantity }})</td>
+                    <td class="align-middle"><strong>Total:</strong> ${{ product.total_price }}</td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+        
+            <div class="row mt-3">
+              <div class="col-md-6">
+                <!-- Button to go back to the cart -->
+                <a href="{% url 'view_cart' %}" class="btn btn-outline-dark flex-shrink-0">Back to Cart</a>
+              </div>
+              <div class="col-md-6 text-md-end">
+                <p class="mb-0"><strong>Total For All:</strong> ${{ total_price }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+      </div>
+
+      <div class="col-md-4">
+        <!-- Shipping Details Card -->
+        <div class="card shadow">
+          <div class="card-body">
+            <h2 class="card-title mb-4">Shipping Details</h2>
+            {% if shipping_details %}
+              <div class="mb-3">
+                <strong>Full Name:</strong> {{ shipping_details.full_name }}
+              </div>
+              <div class="mb-3">
+                <strong>City:</strong> {{ shipping_details.city }}
+              </div>
+              <div class="mb-3">
+                <strong>Postcode:</strong> {{ shipping_details.postcode }}
+              </div>
+              <div class="mb-3">
+                <strong>Address:</strong> {{ shipping_details.address }}
+              </div>
+              <div class="mb-3">
+                <strong>Contact Number:</strong> {{ shipping_details.contact_number }}
+              </div>
+              <div class="mb-3">
+                <strong>Email:</strong> {{ shipping_details.email }}
+              </div>
+              
+            {% else %}
+              <p>No shipping details found.</p>
+            {% endif %}
+          </div>
+        </div>
+
+        <!-- Proceed to Payment Button -->
+        <button type="button" class="btn btn-success btn-lg btn-block mt-4">Proceed to Payment</button>
+      </div>
+    </div>
   </div>
 {% endblock %}

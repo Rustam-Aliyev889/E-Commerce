@@ -39,6 +39,18 @@ class Order(models.Model):
     def __str__(self):
         return self.name
 
+class ShippingDetails(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    full_name = models.CharField(max_length=255)
+    address = models.CharField(max_length=255)
+    city = models.CharField(max_length=255)
+    postcode = models.CharField(max_length=10)
+    contact_number = models.CharField(max_length=15)
+    email = models.EmailField()
+
+    def __str__(self):
+        return f"Shipping Details for {self.user.username}"
+
 class Article(models.Model):
     CATEGORY_CHOICES = (
         ('Haircare', 'Haircare'),

@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row mt-4 justify-content-center">
+    <div class="col-md-6 mb-4">
+      <div class="card mb-4">
+        <div class="card-header py-3">
+          <h5 class="mb-0">Biling details</h5>
+        </div>
+        <div class="card-body">
+            <form method="post" action="{% url 'shipping_details' %}" class="">
+            {% csrf_token %}
+
+            <!-- Full Name -->
+            <div class="mb-3">
+                <label class="form-label" for="{{ form.full_name.id_for_label }}">Full name</label>
+                <div class="form-outline">
+                    <input type="text" id="{{ form.full_name.id_for_label }}" name="{{ form.full_name.name }}" class="form-control" />
+                </div>
+            </div>
+
+            <!-- City -->
+        <div class="mb-3">
+            <label for="{{ form.city.id_for_label }}" class="form-label">City</label>
+            <div class="form-outline">
+                <input type="text" id="{{ form.city.id_for_label }}" name="{{ form.city.name }}" class="form-control" />
+            </div>
+        </div>
+
+        <!-- Postcode -->
+        <div class="mb-3">
+            <label for="{{ form.postcode.id_for_label }}" class="form-label">Postcode</label>
+            <div class="form-outline">
+                <input type="text" id="{{ form.postcode.id_for_label }}" name="{{ form.postcode.name }}" class="form-control" />
+            </div>
+        </div>
+
+        <!-- Address -->
+        <div class="mb-3">
+            <label for="{{ form.address.id_for_label }}" class="form-label">Address</label>
+            <div class="form-outline">
+                <input type="text" id="{{ form.address.id_for_label }}" name="{{ form.address.name }}" class="form-control" />
+            </div>
+        </div>
+
+        <!-- Contact Number -->
+        <div class="mb-3">
+            <label for="{{ form.contact_number.id_for_label }}" class="form-label">Contact Number</label>
+            <div class="form-outline">
+                <input type="text" id="{{ form.contact_number.id_for_label }}" name="{{ form.contact_number.name }}" class="form-control" />
+            </div>
+        </div>
+
+        <!-- Email -->
+        <div class="mb-3">
+            <label for="{{ form.email.id_for_label }}" class="form-label">Email</label>
+            <div class="form-outline">
+                <input type="email" id="{{ form.email.id_for_label }}" name="{{ form.email.name }}" class="form-control" />
+            </div>
+        </div>
+
+            <!-- Submit Button -->
+            <button type="submit" class="btn btn-success btn-lg btn-block mt-3 mx-auto d-block">Proceed to Checkout</button>
+            </form>
+        </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

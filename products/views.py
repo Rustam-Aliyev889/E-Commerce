@@ -1,10 +1,10 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login, logout, authenticate
-from .models import Product, Cart, Order, Article
+from .models import Product, Cart, Order, Article,ShippingDetails
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
-from .forms import ProductForm, CartAddProductForm, SignUpForm
+from .forms import ProductForm, CartAddProductForm, SignUpForm, ShippingDetailsForm
 import random
 from django.http import JsonResponse
 from django.contrib import messages
@@ -84,20 +84,46 @@ def article_list(request):
     return render(request, 'articles/article_list.html', {'articles': articles, 'selected_category': category_filter})
 
 @login_required
+def shipping_details(request):
+    existing_shipping_details = ShippingDetails.objects.filter(user=request.user).first()
+
+    if existing_shipping_details:
+        # If shipping details already exist for the user, -> redirect or display a message(4 later)
+        return redirect('checkout')  
+
+    if request.method == 'POST':
+        form = ShippingDetailsForm(request.POST)
+        if form.is_valid():
+            shipping_details = form.save(commit=False)
+            shipping_details.user = request.user
+            shipping_details.save()
+            return redirect('checkout')
+    else:
+        form = ShippingDetailsForm()
+
+    return render(request, 'products/shipping_details.html', {'form': form})
+
 def order_summary(request):
     order = Order.objects.get(user=request.user, ordered=False)
     return render(request, 'order_summary.html', {'order': order})
 
 @login_required
 def checkout(request):
-    order = Order.objects.get(user=request.user, ordered=False)
+    # cart details
+    cart, created = Cart.objects.get_or_create(user=request.user)
+    products = cart.products.all()
+    for product in products:
+        product.total_price = product.price * product.quantity
 
-    if request.method == 'POST':
-        order.ordered = True
-        order.save()
-        return render(request, 'checkout.html', {'order': order})
+    # Calculate the overall total price
+    total_price = sum(product.total_price for product in products)
+    # shipping details
+    try:
+        shipping_details = ShippingDetails.objects.get(user=request.user)
+    except ShippingDetails.DoesNotExist:
+        shipping_details = None
 
-    return render(request, 'checkout.html', {'order': order})
+    return render(request, 'products/checkout.html', {'cart': cart, 'products': products, 'total_price': total_price, 'shipping_details': shipping_details})
 
 def view_cart(request):
     cart, created = Cart.objects.get_or_create(user=request.user)
