@@ -1,21 +1,21 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="row mt-4 justify-content-center">
+<div class="row mt-4 mb-4 justify-content-center">
     <div class="col-md-8">
       <div class="card mb-4">
         <div class="card-header py-3">
           <h5 class="mb-0">Billing details</h5>
         </div>
         <div class="card-body">
-            <form method="post" action="{% url 'shipping_details' %}" class="row g-3">
+            <form method="post" action="{% url 'edit_shipping_details' %}" class="row g-3">
             {% csrf_token %}
 
             <!-- Full Name -->
             <div class="col-md-6">
                 <label class="form-label" for="{{ form.full_name.id_for_label }}">Full name</label>
                 <div class="form-outline">
-                    <input type="text" id="{{ form.full_name.id_for_label }}" name="{{ form.full_name.name }}" class="form-control" />
+                    <input type="text" id="{{ form.full_name.id_for_label }}" name="{{ form.full_name.name }}" class="form-control" value="{{ form.full_name.value|default:'' }}" />
                 </div>
             </div>
 
@@ -23,7 +23,7 @@
             <div class="col-md-6">
                 <label for="{{ form.city.id_for_label }}" class="form-label">City</label>
                 <div class="form-outline">
-                    <input type="text" id="{{ form.city.id_for_label }}" name="{{ form.city.name }}" class="form-control" />
+                    <input type="text" id="{{ form.city.id_for_label }}" name="{{ form.city.name }}" class="form-control" value="{{ form.city.value|default:'' }}" />
                 </div>
             </div>
 
@@ -31,7 +31,7 @@
             <div class="col-md-6">
                 <label for="{{ form.postcode.id_for_label }}" class="form-label">Postcode</label>
                 <div class="form-outline">
-                    <input type="text" id="{{ form.postcode.id_for_label }}" name="{{ form.postcode.name }}" class="form-control" />
+                    <input type="text" id="{{ form.postcode.id_for_label }}" name="{{ form.postcode.name }}" class="form-control" value="{{ form.postcode.value|default:'' }}" />
                 </div>
             </div>
 
@@ -39,7 +39,7 @@
             <div class="col-md-6">
                 <label for="{{ form.address.id_for_label }}" class="form-label">Address</label>
                 <div class="form-outline">
-                    <input type="text" id="{{ form.address.id_for_label }}" name="{{ form.address.name }}" class="form-control" />
+                    <input type="text" id="{{ form.address.id_for_label }}" name="{{ form.address.name }}" class="form-control" value="{{ form.address.value|default:'' }}" />
                 </div>
             </div>
 
@@ -47,7 +47,7 @@
             <div class="col-md-6">
                 <label for="{{ form.contact_number.id_for_label }}" class="form-label">Contact Number</label>
                 <div class="form-outline">
-                    <input type="text" id="{{ form.contact_number.id_for_label }}" name="{{ form.contact_number.name }}" class="form-control" />
+                    <input type="text" id="{{ form.contact_number.id_for_label }}" name="{{ form.contact_number.name }}" class="form-control" value="{{ form.contact_number.value|default:'' }}" />
                 </div>
             </div>
 
@@ -55,13 +55,13 @@
             <div class="col-md-6">
                 <label for="{{ form.email.id_for_label }}" class="form-label">Email</label>
                 <div class="form-outline">
-                    <input type="email" id="{{ form.email.id_for_label }}" name="{{ form.email.name }}" class="form-control" />
+                    <input type="email" id="{{ form.email.id_for_label }}" name="{{ form.email.name }}" class="form-control" value="{{ form.email.value|default:'' }}" />
                 </div>
             </div>
 
             <!-- Submit Button -->
             <div class="col-12">
-                <button type="submit" class="btn btn-success btn-lg btn-block mt-3 mx-auto d-block">Proceed to Checkout</button>
+                <button type="submit" class="btn btn-success btn-lg btn-block mt-3 mx-auto d-block">Save Details</button>
             </div>
             </form>
         </div>

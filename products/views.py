@@ -89,6 +89,7 @@ def shipping_details(request):
 
     if existing_shipping_details:
         # If shipping details already exist for the user, -> redirect or display a message(4 later)
+        messages.warning(request, 'Shipping details already exist.')
         return redirect('checkout')  
 
     if request.method == 'POST':
@@ -97,11 +98,26 @@ def shipping_details(request):
             shipping_details = form.save(commit=False)
             shipping_details.user = request.user
             shipping_details.save()
+            messages.success(request, 'Shipping details added successfully.')
             return redirect('checkout')
     else:
         form = ShippingDetailsForm()
 
     return render(request, 'products/shipping_details.html', {'form': form})
+
+def edit_shipping_details(request):
+    shipping_details, created = ShippingDetails.objects.get_or_create(user=request.user)
+
+    if request.method == 'POST':
+        form = ShippingDetailsForm(request.POST, instance=shipping_details)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Your shipping details have been updated.")
+            return redirect('checkout')
+    else:
+        form = ShippingDetailsForm(instance=shipping_details)
+
+    return render(request, 'products/edit_shipping_details.html', {'form': form})
 
 def order_summary(request):
     order = Order.objects.get(user=request.user, ordered=False)
