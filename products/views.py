@@ -213,15 +213,3 @@ def product_detail(request, product_id):
     # If the request method is not POST, just renders the product detail page
     return render(request, 'products/product_detail.html', {'product': product, 'cart_product_form': cart_product_form, 'product_id': product_id})
 
-#@login_required
-def create_product(request):
-    if request.method == 'POST':
-        form = ProductForm(request.POST, request.FILES)
-        if form.is_valid():
-            product = form.save(commit=False)
-            product.user = request.user
-            product.save()
-            return redirect('product_list')
-    else:
-        form = ProductForm()
-    return render(request, 'products/create_product.html', {'form': form})
