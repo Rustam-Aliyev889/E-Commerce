@@ -8,7 +8,6 @@
         <div class="card shadow">
           <div class="card-body">
             <h2 class="card-title mb-4">Order Details</h2>
-        
             <table class="table">
               <tbody>
                 {% for product in products %}
@@ -22,7 +21,6 @@
                 {% endfor %}
               </tbody>
             </table>
-        
             <div class="row mt-3">
               <div class="col-md-6">
                 <!-- Button to go back to the cart -->
@@ -34,7 +32,6 @@
             </div>
           </div>
         </div>
-        
       </div>
 
       <div class="col-md-4">
@@ -63,16 +60,111 @@
               </div>
               <div class="col-md-12 text-md-end">
                 <a href="{% url 'edit_shipping_details' %}" class="btn btn-outline-dark">Edit Shipping Details</a>
-            </div>
+              </div>
             {% else %}
               <p>No shipping details found.</p>
             {% endif %}
           </div>
         </div>
+      </div>
 
-        <!-- Proceed to Payment Button -->
-        <button type="button" class="btn btn-success btn-lg btn-block mt-4">Proceed to Payment</button>
+      <div class="col-md-8 mb-4">
+        <div class="card shadow">
+          <div class="card-body">
+            <form action="{% url 'checkout' %}" method="post" id="payment-form">
+              {% csrf_token %}
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label for="card-element" class="col-md-6" style="font-weight: 600;">Credit or debit card</label>
+                    <div id="card-element" class="stripe-element form-control mt-2 mb-2"></div>
+                    <p id="card-errors" class="text-danger"></p>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label for="cardholder-name" class="col-md-6" style="font-weight: 600;">Cardholder Name</label>
+                    <input type="text" id="cardholder-name" placeholder="Name On Card" class="form-control mt-2 mb-2 col-md-6" style="height: 33px;" required>
+                  </div>
+                </div>
+              </div>
+              <button id="submit-payment" class="btn btn-success btn-md btn-block d-block mx-auto mt-2">Make Payment</button>
+            </form>
+          </div>
+        </div>
       </div>
     </div>
   </div>
+
+
+  <script>
+    var stripe = Stripe('{{ STRIPE_PUBLIC_KEY }}');
+    var elements = stripe.elements();
+
+    // Create an instance of the card Element.
+    var card = elements.create('card', {
+      style: {
+        base: {
+          iconColor: '#C4F0FF',
+          fontWeight: 500,
+          fontFamily: 'Helvetica Neue',
+          fontSize: '16px',
+          '::placeholder': {
+            color: '#3d3d3d'
+          }
+        },
+        invalid: {
+          iconColor: '#FFC7EE',
+          color: '#FFC7EE',
+          border: '1px solid #FFC7EE'
+        }
+      },
+      classes: {
+        focus: 'is-focused',
+        empty: 'is-empty',
+        invalid: 'is-invalid'
+      }
+    });
+
+    card.mount('#card-element');
+
+    // Handle real-time validation errors from the card Element
+    card.addEventListener('change', function(event) {
+      var displayError = document.getElementById('card-errors')
+      if (event.error) {
+        displayError.textContent = event.error.message;
+      } else {
+        displayError.textContent = '';
+      }
+    });
+
+    // Handle form submission
+    var form = document.getElementById('payment-form')
+    form.addEventListener('submit', function(event) {
+      event.preventDefault();
+
+      document.getElementById('submit-payment').disabled = true;
+
+      stripe.createPaymentMethod({
+        type: 'card',
+        card: card,
+        billing_details: {
+          name: document.getElementById('cardholder-name').value,
+        }
+      }).then(function(result) {
+        if (result.error) {
+          var errorElement = document.getElementById('card-errors')
+          errorElement.textContent = result.error.message;
+          document.getElementById('submit-payment').disabled = false;
+        } else {
+          var hiddenInput = document.createElement('input')
+          hiddenInput.setAttribute('type', 'hidden')
+          hiddenInput.setAttribute('name', 'payment_method_id')
+          hiddenInput.setAttribute('value', result.paymentMethod.id)
+          form.appendChild(hiddenInput)
+          form.submit()
+        }
+      });
+    });
+  </script>
 {% endblock %}

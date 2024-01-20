@@ -8,6 +8,10 @@ from .forms import ProductForm, CartAddProductForm, SignUpForm, ShippingDetailsF
 import random
 from django.http import JsonResponse
 from django.contrib import messages
+from django.conf import settings
+import stripe
+
+stripe.api_key = settings.STRIPE_SECRET_KEY
 
 def home(request):
     beauty_boxes = Product.objects.filter(category='Beauty Boxes')
@@ -133,13 +137,23 @@ def checkout(request):
 
     # Calculate the overall total price
     total_price = sum(product.total_price for product in products)
+
     # shipping details
     try:
         shipping_details = ShippingDetails.objects.get(user=request.user)
     except ShippingDetails.DoesNotExist:
         shipping_details = None
 
-    return render(request, 'products/checkout.html', {'cart': cart, 'products': products, 'total_price': total_price, 'shipping_details': shipping_details})
+    # Stripe public key in the context
+    context = {
+        'cart': cart,
+        'products': products,
+        'total_price': total_price,
+        'shipping_details': shipping_details,
+        'STRIPE_PUBLIC_KEY': settings.STRIPE_PUBLIC_KEY, 
+    }
+
+    return render(request, 'products/checkout.html', context)
 
 def view_cart(request):
     cart, created = Cart.objects.get_or_create(user=request.user)
