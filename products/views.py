@@ -129,7 +129,7 @@ def order_summary(request):
 
 @login_required
 def checkout(request):
-    # cart details
+    # Cart details
     cart, created = Cart.objects.get_or_create(user=request.user)
     products = cart.products.all()
     for product in products:
@@ -138,7 +138,7 @@ def checkout(request):
     # Calculate the overall total price
     total_price = sum(product.total_price for product in products)
 
-    # shipping details
+    # Shipping details
     try:
         shipping_details = ShippingDetails.objects.get(user=request.user)
     except ShippingDetails.DoesNotExist:
@@ -150,9 +150,53 @@ def checkout(request):
         'products': products,
         'total_price': total_price,
         'shipping_details': shipping_details,
-        'STRIPE_PUBLIC_KEY': settings.STRIPE_PUBLIC_KEY, 
+        'STRIPE_PUBLIC_KEY': settings.STRIPE_PUBLIC_KEY,
     }
 
+    intent = None
+
+    if request.method == 'POST':
+        # Get the Stripe token from the form data
+        token = request.POST.get('stripeToken')
+
+        if not token or not token.startswith('tok_'):
+            # The token is invalid or missing
+            messages.error(request, 'Invalid or missing Stripe token.')
+            return render(request, 'products/checkout.html', context)
+
+        try:
+            # Check if a customer with the email already exists
+            customer = stripe.Customer.list(email=request.user.email, limit=1).data
+            if customer:
+                customer = customer[0]
+            else:
+                # Create a new customer in Stripe
+                customer = stripe.Customer.create(
+                    email=request.user.email,
+                    source=token,
+                )
+
+            # Create a PaymentIntent
+            intent = stripe.PaymentIntent.create(
+                amount=int(total_price * 100),
+                currency='usd',
+                description='Order',
+                customer=customer.id,
+            )
+
+        except stripe.error.CardError as e:
+            # The card has been declined
+            messages.error(request, f"Payment failed: {e.error.message}")
+
+        except stripe.error.StripeError as e:
+            # Handle other Stripe errors
+            messages.error(request, f"Stripe error: {str(e)}")
+
+        except Exception as e:
+            # Handle other exceptions
+            messages.error(request, f"Error processing payment: {str(e)}")
+
+    context['client_secret'] = intent.client_secret if intent else None
     return render(request, 'products/checkout.html', context)
 
 def view_cart(request):

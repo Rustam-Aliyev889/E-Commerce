@@ -3,7 +3,7 @@
 {% block content %}
   <div class="container mt-5">
     <div class="row">
-      <div class="col-md-8 mb-4">
+      <div class="col-md-8 ">
         <!-- Order Details Card -->
         <div class="card shadow">
           <div class="card-body">
@@ -71,23 +71,25 @@
       <div class="col-md-8 mb-4">
         <div class="card shadow">
           <div class="card-body">
-            <form action="{% url 'checkout' %}" method="post" id="payment-form">
+            <form action="{% url 'checkout' %}" method="post" id="payment-form" data-secret="{{ client_secret }}">
               {% csrf_token %}
               <div class="row">
                 <div class="col-md-6">
                   <div class="form-group">
-                    <label for="card-element" class="col-md-6" style="font-weight: 600;">Credit or debit card</label>
+                    <label for="card-element" class="col-md-6" style="font-weight: 450;">Credit or debit card</label>
                     <div id="card-element" class="stripe-element form-control mt-2 mb-2"></div>
                     <p id="card-errors" class="text-danger"></p>
                   </div>
                 </div>
                 <div class="col-md-6">
                   <div class="form-group">
-                    <label for="cardholder-name" class="col-md-6" style="font-weight: 600;">Cardholder Name</label>
+                    <label for="cardholder-name" class="col-md-6" style="font-weight: 450;">Cardholder Name</label>
                     <input type="text" id="cardholder-name" placeholder="Name On Card" class="form-control mt-2 mb-2 col-md-6" style="height: 33px;" required>
                   </div>
                 </div>
               </div>
+              <input type="hidden" id="stripeToken" name="stripeToken">
+              <p id="card-errors" class="text-danger"></p>
               <button id="submit-payment" class="btn btn-success btn-md btn-block d-block mx-auto mt-2">Make Payment</button>
             </form>
           </div>
@@ -100,71 +102,35 @@
   <script>
     var stripe = Stripe('{{ STRIPE_PUBLIC_KEY }}');
     var elements = stripe.elements();
+    var cardElement = elements.create('card');
+    cardElement.mount('#card-element');
 
-    // Create an instance of the card Element.
-    var card = elements.create('card', {
-      style: {
-        base: {
-          iconColor: '#C4F0FF',
-          fontWeight: 500,
-          fontFamily: 'Helvetica Neue',
-          fontSize: '16px',
-          '::placeholder': {
-            color: '#3d3d3d'
-          }
-        },
-        invalid: {
-          iconColor: '#FFC7EE',
-          color: '#FFC7EE',
-          border: '1px solid #FFC7EE'
-        }
-      },
-      classes: {
-        focus: 'is-focused',
-        empty: 'is-empty',
-        invalid: 'is-invalid'
-      }
-    });
+    var form = document.getElementById('payment-form');
 
-    card.mount('#card-element');
+form.addEventListener('submit', function(event) {
+    event.preventDefault();
 
-    // Handle real-time validation errors from the card Element
-    card.addEventListener('change', function(event) {
-      var displayError = document.getElementById('card-errors')
-      if (event.error) {
-        displayError.textContent = event.error.message;
-      } else {
-        displayError.textContent = '';
-      }
-    });
+    document.getElementById('submit-payment').disabled = true;
 
-    // Handle form submission
-    var form = document.getElementById('payment-form')
-    form.addEventListener('submit', function(event) {
-      event.preventDefault();
-
-      document.getElementById('submit-payment').disabled = true;
-
-      stripe.createPaymentMethod({
-        type: 'card',
-        card: card,
-        billing_details: {
-          name: document.getElementById('cardholder-name').value,
-        }
-      }).then(function(result) {
+    stripe.createToken(cardElement, {
+        name: document.getElementById('cardholder-name').value
+    }).then(function(result) {
         if (result.error) {
-          var errorElement = document.getElementById('card-errors')
-          errorElement.textContent = result.error.message;
-          document.getElementById('submit-payment').disabled = false;
+            var errorElement = document.getElementById('card-errors');
+            errorElement.textContent = result.error.message;
+            document.getElementById('submit-payment').disabled = false;
         } else {
-          var hiddenInput = document.createElement('input')
-          hiddenInput.setAttribute('type', 'hidden')
-          hiddenInput.setAttribute('name', 'payment_method_id')
-          hiddenInput.setAttribute('value', result.paymentMethod.id)
-          form.appendChild(hiddenInput)
-          form.submit()
+            var hiddenInput = document.createElement('input');
+            hiddenInput.setAttribute('type', 'hidden');
+            hiddenInput.setAttribute('name', 'stripeToken');
+            hiddenInput.setAttribute('value', result.token.id);
+            form.appendChild(hiddenInput);
+
+            form.submit();
         }
-      });
     });
-  </script>
+    });
+</script>
+
+
 {% endblock %}
