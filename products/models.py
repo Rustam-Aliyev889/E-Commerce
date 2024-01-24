@@ -37,7 +37,7 @@ class Order(models.Model):
     total_price = models.DecimalField(max_digits=10, decimal_places=2)
 
     def __str__(self):
-        return self.name
+        return f"Order {self.id} by {self.user.username}"
 
 class ShippingDetails(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)

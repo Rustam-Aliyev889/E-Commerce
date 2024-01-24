@@ -1,14 +1,32 @@
 {% extends 'base.html' %}
+{% load static %}
+
 
 {% block content %}
-  <div class="container mt-4">
-    <h1>Order Summary</h1>
-    <ul>
-      {% for item in order.items.all %}
-        <li>{{ item.product.name }} - Quantity: {{ item.quantity }} - ${{ item.get_total }}</li>
-      {% endfor %}
-    </ul>
-    <p>Total: ${{ order.get_total }}</p>
-    <a href="{% url 'checkout' %}" class="btn btn-success">Proceed to Checkout</a>
-  </div>
+<div class="container mt-5" style="background-color: beige; width: 60%; border-radius: 15px; box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);">
+    <div class="row py-4">
+        <div class="col-md-6 d-flex align-items-center justify-content-center" style="width: 50%;">
+            <div class="container">
+                <!-- Thank You Message -->
+                <h2 class="text-center mb-4"><i class="fas fa-check-circle text-success"></i> Thank You for Your Order!</h2>
+                <p class="text-center" style="color: #6c757d; font-size: 16px;">Your order has been successfully processed. We appreciate your business!</p>
+
+                <!-- Continue Shopping Button -->
+                <p class="text-center mt-4">
+                    <a href="{% url 'home' %}" class="btn btn-success btn-lg"><i class="fas fa-shopping-cart"></i> Continue Shopping</a>
+                </p>
+            </div>
+        </div>
+
+        <!-- Image on the right side -->
+        <div class="col-md-6 d-flex align-items-center justify-content-end" style="width: 50%;">
+            <div class="container">
+                <div class="text-center">
+                    <img src="{% static 'images/tnx.jpeg' %}" alt="Image" class="img-fluid rounded" style="max-height: 300px; width: auto;">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}
+

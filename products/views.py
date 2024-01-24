@@ -4,6 +4,7 @@ from django.contrib.auth import login, logout, authenticate
 from .models import Product, Cart, Order, Article,ShippingDetails
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
+from django.db.models import Max
 from .forms import ProductForm, CartAddProductForm, SignUpForm, ShippingDetailsForm
 import random
 from django.http import JsonResponse
@@ -123,9 +124,16 @@ def edit_shipping_details(request):
 
     return render(request, 'products/edit_shipping_details.html', {'form': form})
 
+@login_required
 def order_summary(request):
-    order = Order.objects.get(user=request.user, ordered=False)
-    return render(request, 'order_summary.html', {'order': order})
+    # Gets the most recent order for the current user
+    try:
+        most_recent_order_id = Order.objects.filter(user=request.user).aggregate(Max('id'))['id__max']
+        most_recent_order = Order.objects.get(id=most_recent_order_id)
+    except Order.DoesNotExist:
+        most_recent_order = None
+
+    return render(request, 'products/order_summary.html', {'order': most_recent_order})
 
 @login_required
 def checkout(request):
@@ -183,6 +191,11 @@ def checkout(request):
                 description='Order',
                 customer=customer.id,
             )
+            cart.products.clear()
+
+            # To associate the order with the user
+            Order.objects.create(user=request.user, total_price=total_price)
+            return redirect('order_summary')
 
         except stripe.error.CardError as e:
             # The card has been declined
