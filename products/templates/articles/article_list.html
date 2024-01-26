@@ -3,12 +3,12 @@
 {% block content %}
   <div class="container mt-4">
     <h1 class="mb-4" style="text-align: center;">Helpful Write-ups</h1>
-    <div class="btn-group" role="group" aria-label="Filter by Category">
+    <div class="btn-group d-flex justify-content-center mx-auto" role="group" aria-label="Filter by Category" style="width: 50%;">
         <!--<a href="{% url 'article_list' %}" class="btn btn-primary filter-button">All</a>-->
-        <a href="{% url 'article_list' %}?category=Haircare" class="btn btn-primary filter-button">Haircare</a>
-        <a href="{% url 'article_list' %}?category=Skincare" class="btn btn-primary filter-button">Skincare</a>
-        <a href="{% url 'article_list' %}?category=Bodycare" class="btn btn-primary filter-button">Bodycare</a>
-        <a href="{% url 'article_list' %}?category=Fragrance" class="btn btn-primary filter-button">Fragrance</a>
+        <a href="{% url 'article_list' %}?category=Haircare" class="btn btn-dark rounded-pill filter-button m-2" style="background-color: #372e3b; border: none; color: #fff;" onmouseover="this.style.backgroundColor='#524450'" onmouseout="this.style.backgroundColor='#372e3b'">Haircare</a>
+        <a href="{% url 'article_list' %}?category=Skincare" class="btn btn-dark rounded-pill filter-button m-2" style="background-color: #372e3b; border: none; color: #fff;" onmouseover="this.style.backgroundColor='#524450'" onmouseout="this.style.backgroundColor='#372e3b'">Skincare</a>
+        <a href="{% url 'article_list' %}?category=Bodycare" class="btn btn-dark rounded-pill filter-button m-2" style="background-color: #372e3b; border: none; color: #fff;" onmouseover="this.style.backgroundColor='#524450'" onmouseout="this.style.backgroundColor='#372e3b'">Bodycare</a>
+        <a href="{% url 'article_list' %}?category=Fragrance" class="btn btn-dark rounded-pill filter-button m-2" style="background-color: #372e3b; border: none; color: #fff;" onmouseover="this.style.backgroundColor='#524450'" onmouseout="this.style.backgroundColor='#372e3b'">Fragrance</a>
         <!-- buttons  -->
       </div>
     <div class="row">

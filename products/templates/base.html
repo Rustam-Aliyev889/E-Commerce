@@ -18,9 +18,9 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
 
 </head>
-<body style="background:#dda9dd ; height: fit-content;">
+<body style="background: #a36d7d ; height: fit-content;">
 
-<nav class="navbar navbar-expand-lg">
+<nav class="navbar navbar-expand-lg" style="background:#b76e79">
     <div class="container-fluid">
       <a class="navbar-brand" href="{% url 'home' %}" style="color: rgb(66, 25, 69); font-family:monospace; font-weight: 700;" >Radiant Rituals</a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
@@ -28,10 +28,10 @@
       </button>
       <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
         <div class="navbar-nav ms-auto" style="color: rgb(236, 222, 222); font-size: 17px; font-weight: 600;">
-          <a class="nav-link" aria-current="page" href="{% url 'home' %}" >Home</a>
-          <a class="nav-link" href="{% url 'product_list' %}" >Products</a>
-          <a class="nav-link" href="{% url 'article_list' %}">Blog</a>
-          <a href="{% url 'view_cart' %}" class="nav-link" id="cartLink">
+          <a class="nav-link" aria-current="page" href="{% url 'home' %}" onmouseover="this.style.color='white'" onmouseout="this.style.color='rgb(66, 25, 69)'" >Home</a>
+          <a class="nav-link" href="{% url 'product_list' %}" onmouseover="this.style.color='white'" onmouseout="this.style.color='rgb(66, 25, 69)'" >Products</a>
+          <a class="nav-link" href="{% url 'article_list' %}" onmouseover="this.style.color='white'" onmouseout="this.style.color='rgb(66, 25, 69)'">Blog</a>
+          <a href="{% url 'view_cart' %}" class="nav-link" id="cartLink" onmouseover="this.style.color='white'" onmouseout="this.style.color='rgb(66, 25, 69)'">
             <i class="fas fa-shopping-cart"></i> 
             <span class="badge badge-pill badge-danger" style="background-color: rgb(66, 25, 69); border-radius: 50%; font-size: 15px;" id="cartItemCount">{{ cart.item_count }}</span>
             <!--{% if cart.item_count > 0 %}
@@ -39,17 +39,15 @@
             {% endif %}-->
         </a>
           {% if user.is_authenticated %}
-          <a class="nav-link" href="{% url 'logout' %}" >Logout</a>
+          <a class="nav-link" href="{% url 'logout' %}" onmouseover="this.style.color='white'" onmouseout="this.style.color='rgb(66, 25, 69)'" >Logout</a>
           {% else %}
-          <a class="nav-link" href="{% url 'login_user' %}" >Login</a>
+          <a class="nav-link" href="{% url 'login_user' %}" onmouseover="this.style.color='white'" onmouseout="this.style.color='rgb(66, 25, 69)'" >Login</a>
           {% endif %}
         </div>
       </div>
     </div>
   </nav>
-  <!--<header class="">
-    <img src="{% static 'images/b1.png' %}" class="d-block w-100" alt="..." style="width: 100%;">
-  </header>-->
+  
 
 
     {% if messages %}
@@ -69,7 +67,7 @@
 
   
     {% block content %}
-    <div id="carouselExampleControls" class="carousel slide mx-auto" data-bs-ride="carousel">
+    <!--<div id="carouselExampleControls" class="carousel slide mx-auto" data-bs-ride="carousel">
         <div class="carousel-inner" style="width: 100%;" >
             <div class="carousel-item active">
                 <img src="{% static 'images/banner1.png' %}" class="d-block w-100" alt="..." style="width: 100%;">
@@ -98,20 +96,25 @@
             <span class="carousel-control-next-icon" aria-hidden="true"></span>
             <span class="visually-hidden">Next</span>
         </button>
-    </div>
+    </div>-->
+    <header class="">
+        <img src="{% static 'images/b2.png' %}" class="d-block w-100" alt="..." style="width: 100%;">
+      </header>
 
-    <div class="btn-group" role="group" aria-label="Filter by Gender">
-        <a href="{% url 'home' %}?gender=male" class="btn btn-primary filter-button">Male</a>
-        <a href="{% url 'home' %}?gender=female" class="btn btn-primary filter-button">Female</a>
-        <a href="{% url 'home' %}" class="btn btn-primary filter-button">All</a>
+    <div class="container mt-3">
+        <div class="btn-group d-flex justify-content-center mx-auto" role="group" aria-label="Filter by Gender" style="width: 50%;">
+            <a href="{% url 'home' %}?gender=male" class="btn btn-dark rounded-pill filter-button m-2" style="background-color: #372e3b; border: none; color: #fff;" onmouseover="this.style.backgroundColor='#524450'" onmouseout="this.style.backgroundColor='#372e3b'">Male</a>
+            <a href="{% url 'home' %}?gender=female" class="btn btn-dark rounded-pill filter-button m-2" style="background-color: #372e3b; border: none; color: #fff;" onmouseover="this.style.backgroundColor='#524450'" onmouseout="this.style.backgroundColor='#372e3b'">Female</a>
+            <a href="{% url 'home' %}" class="btn btn-dark rounded-pill filter-button m-2" style="background-color: #372e3b; border: none; color: #fff;" onmouseover="this.style.backgroundColor='#524450'" onmouseout="this.style.backgroundColor='#372e3b'">All</a>
+        </div>
     </div>
 
 
     <div class="row justify-content-center">
-        <div class="row">
+        <div class="row" style="width: 92%;">
             {% for product in beauty_boxes %}
                 <div class="col-md-3 mt-4 mx-auto mb-4">
-                    <div class="card">
+                    <div class="card" style="background-color: #372e3b; color: #ffffff;">
                         <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}">
                         <div class="card-body">
                             <a class="nav-link" href="{% url 'product_detail' product_id=product.id %}" style="height: 3rem; font-size: 20px; font-weight: 500; transition: transform 0.3s ease-out;" onmouseover="this.style.transform='scale(1.075)'" onmouseout="this.style.transform='scale(1)'">{{ product.name }}</a>
@@ -121,7 +124,7 @@
                             <!-- buttons -->
                             <div class="d-flex">
                                 <!--<input class="form-control text-center me-3" id="inputQuantity" type="number" value="1" min="1" style="max-width: 4rem">-->
-                                 <button class="btn btn-outline-dark mx-auto flex-shrink-0" style="width: 100%;" type="button" onclick="addToCart('{{ product.id|escapejs }}')">
+                                 <button class="btn btn-outline-dark mx-auto flex-shrink-0" style="width: 100%; background-color: #a36d7d;" type="button" onclick="addToCart('{{ product.id|escapejs }}')">
                                      <i class="bi-cart-fill me-1"></i>
                                      Add to Cart
                                  </button>
@@ -132,9 +135,111 @@
                 </div>
             {% endfor %}
         </div>
+        <header class="">
+            <h1 class="text-center mb-4 mt-4">Our Partners</h1>
+            <img src="{% static 'images/p1.png' %}" class="d-block w-100" alt="Partners">
+          </header>
     {% endblock %}
-</div>
 
+
+
+
+<footer class="text-center text-white" style="background-color: #372e3b">
+    <!-- Grid container -->
+    <div class="container">
+        <!-- Section: Links -->
+        <section class="mt-5">
+            <!-- Grid row-->
+            <div class="row text-center d-flex justify-content-center pt-5">
+                <!-- Grid column -->
+                <div class="col-md-2">
+                    <h6 class="text-uppercase font-weight-bold">
+                        <a href="#!" class="text-white text-decoration-none">About us</a>
+                    </h6>
+                </div>
+                <!-- Grid column -->
+
+                <!-- Grid column -->
+                <div class="col-md-2">
+                    <h6 class="text-uppercase font-weight-bold">
+                        <a href="#!" class="text-white text-decoration-none">Products</a>
+                    </h6>
+                </div>
+                <!-- Grid column -->
+
+                <!-- Grid column -->
+                <div class="col-md-2">
+                    <h6 class="text-uppercase font-weight-bold">
+                        <a href="#!" class="text-white text-decoration-none">Awards</a>
+                    </h6>
+                </div>
+                <!-- Grid column -->
+
+                <!-- Grid column -->
+                <div class="col-md-2">
+                    <h6 class="text-uppercase font-weight-bold">
+                        <a href="#!" class="text-white text-decoration-none">Help</a>
+                    </h6>
+                </div>
+                <!-- Grid column -->
+
+                <!-- Grid column -->
+                <div class="col-md-2">
+                    <h6 class="text-uppercase font-weight-bold">
+                        <a href="#!" class="text-white text-decoration-none">Contact</a>
+                    </h6>
+                </div>
+                <!-- Grid column -->
+            </div>
+            <!-- Grid row-->
+        </section>
+        <!-- Section: Links -->
+
+        <hr class="my-5" />
+
+        <!-- Section: Text -->
+        <section class="mb-5">
+            <div class="row d-flex justify-content-center">
+                <div class="col-lg-8">
+                    <p>
+                        Discover a world of indulgence at Radiant Rituals,
+                        where we present a range of exquisite beauty products.
+                        Elevate your natural beauty with our premium selection and let our mission enhance your daily self-care routine.
+                        Experience the empowerment of confidence and radiance with every use.
+                    </p>
+                </div>
+            </div>
+        </section>
+        <!-- Section: Text -->
+
+        <!-- Section: Social -->
+        <section class="text-center mb-5">
+            <a href="" class="text-white text-decoration-none me-4">
+                <i class="fab fa-facebook-f"></i>
+            </a>
+            <a href="" class="text-white text-decoration-none me-4">
+                <i class="fab fa-twitter"></i>
+            </a>
+            <a href="" class="text-white text-decoration-none me-4">
+                <i class="fab fa-google"></i>
+            </a>
+            <a href="" class="text-white text-decoration-none me-4">
+                <i class="fab fa-instagram"></i>
+            </a>
+            <a href="" class="text-white text-decoration-none me-4">
+                <i class="fab fa-linkedin"></i>
+            </a>
+        </section>
+        <!-- Section: Social -->
+    </div>
+    <!-- Grid container -->
+
+    <!-- Copyright -->
+    <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2)">
+        © 2020 Radiant Rituals
+    </div>
+    <!-- Copyright -->
+</footer>
 
 </body>
 </html>

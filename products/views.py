@@ -261,8 +261,19 @@ def remove_from_cart(request, product_id):
     return redirect('view_cart')
 
 def product_list(request):
-    products = Product.objects.all()
-    return render(request, 'products/product_list.html', {'products': products})
+    # To get all unique categories excluding 'Beauty Boxes'
+    categories = Product.objects.exclude(category='Beauty Boxes').values_list('category', flat=True).distinct()
+
+    #To get the selected category from the query parameters
+    selected_category = request.GET.get('category', 'All')
+
+    # Filtesr products by the selected category, or shows all products if 'All' is selected
+    if selected_category == 'All':
+        products = Product.objects.exclude(category='Beauty Boxes')
+    else:
+        products = Product.objects.filter(category=selected_category)
+
+    return render(request, 'products/product_list.html', {'products': products, 'selected_category': selected_category, 'categories': categories})
 
 def product_detail(request, product_id):
     product = get_object_or_404(Product, pk=product_id)
