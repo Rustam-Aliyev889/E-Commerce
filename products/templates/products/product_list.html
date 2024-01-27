@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="container mt-3">
+<div class="container mt-4">
     <div class="btn-group d-flex justify-content-center mx-auto" role="group" aria-label="Filter by Category" style="width: 50%;">
         <a href="{% url 'product_list' %}?category=All" class="btn btn-dark rounded-pill filter-button m-2" style="background-color: #372e3b; border: none; color: #fff;" onmouseover="this.style.backgroundColor='#524450'" onmouseout="this.style.backgroundColor='#372e3b'">All</a>
         {% for category in categories %}
@@ -15,7 +15,7 @@
 <div class="row justify-content-center">
     <div class="row" style="width: 92%;">
         {% for product in products %}
-            <div class="col-md-3 mt-4 mx-auto mb-4">
+            <div class="col-md-3 mt-4 mx-auto mb-5">
                 <div class="card" style="background-color: #372e3b; color: #ffffff;">
                     <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}">
                     <div class="card-body">
