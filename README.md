@@ -7,9 +7,22 @@ I built Radiant Rituals to challenge the norm in e-commerce design. Breaking awa
 
 ## Screenshots
 #### The main page
-<img src="/products/static/images/scr_shots/src_mp.jpeg"> <img src="/products/static/images/scr_shots/scr_prp.jpeg">
+<img src="/products/static/images/scr_shots/src_mp.jpeg"> 
 
-    
+#### The product detail page  
+<img src="/products/static/images/scr_shots/pr_det.jpeg">
+
+#### The blog  
+<img src="/products/static/images/scr_shots/scr_blog.jpeg">
+
+#### The cart
+<img src="/products/static/images/scr_shots/src_cart.jpeg">
+
+#### The checkout page
+<img src="/products/static/images/scr_shots/scr_check.jpeg">
+
+#### The login/register page  
+<img src="/products/static/images/scr_shots/scr_lgp.jpeg">
 
 ## Tech Stack
 
