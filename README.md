@@ -6,9 +6,8 @@ Welcome to Radiant Rituals, your ultimate destination for beauty in its purest f
 I built Radiant Rituals to challenge the norm in e-commerce design. Breaking away from the black-and-white mold, I wanted to show that web stores can reflect a company's energy and personality. With a vibrant and inviting design, Radiant Rituals proves that beauty and uniqueness can shine through in the digital world, offering a different and delightful shopping experience.
 
 ## Screenshots
-###### The main page
-
-![1 Main Page]<img src="/products/static/images/scr_shots/src_mp.jpeg">
+#### The main page
+<img src="/products/static/images/scr_shots/src_mp.jpeg"> <img src="/products/static/images/scr_shots/scr_prp.jpeg">
 
     
 
