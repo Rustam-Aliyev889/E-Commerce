@@ -8,7 +8,7 @@ I built Radiant Rituals to challenge the norm in e-commerce design. Breaking awa
 ## Screenshots
 ###### The main page
 
-![1 Main Page]<img src="/products/static/images/scr_shots/scr_mp.jpeg">
+![1 Main Page]<img src="/products/static/images/scr_shots/src_mp.jpeg">
 
     
 
